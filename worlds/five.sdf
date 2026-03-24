@@ -1,447 +1,343 @@
 <sdf version='1.10'>
   <world name='five_world'>
-    <gravity>0 0 -9.8000000000000007</gravity>
-    <magnetic_field>5.5644999999999998e-06 2.2875799999999999e-05 -4.2388400000000002e-05</magnetic_field>
-    <atmosphere type='adiabatic'/>
     <physics type='ode'>
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>1000</real_time_update_rate>
     </physics>
-    <scene>
-      <ambient>0.400000006 0.400000006 0.400000006 1</ambient>
-      <background>0.699999988 0.699999988 0.699999988 1</background>
-      <shadows>true</shadows>
-    </scene>
+    <light name='sun' type='directional'>
+      <pose>0 0 10 0 0 0</pose>
+      <direction>-0.5 0.1 -0.9</direction>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+    </light>
+    
     <model name='ground_plane'>
       <static>true</static>
       <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <material>
-            <ambient>0.800000012 0.800000012 0.800000012 1</ambient>
-            <diffuse>0.800000012 0.800000012 0.800000012 1</diffuse>
-          </material>
+        <collision name='col'><geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry></collision>
+        <visual name='vis'>
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material><ambient>0.8 0.8 0.8 1</ambient></material>
         </visual>
-        <pose>0 0 0 0 0 0</pose>
-        <inertial>
-          <pose>0 0 0 0 0 0</pose>
-          <mass>1</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-        </inertial>
-        <enable_wind>false</enable_wind>
       </link>
-      <pose>0 0 0 0 0 0</pose>
-      <self_collide>false</self_collide>
     </model>
-    <model name='wall_top'>
-      <pose>0.44315364956855774 2.6278400421142578 0.5 0 0 0</pose>
+
+    <model name='wall_five'>
       <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>4.2000000000000002 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>4.2000000000000002 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
-        </visual>
-        <pose>0 0 0 0 0 0</pose>
-        <inertial>
-          <pose>0 0 0 0 0 0</pose>
-          <mass>1</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-        </inertial>
-        <enable_wind>false</enable_wind>
-      </link>
-      <self_collide>false</self_collide>
-    </model>
-    <model name='wall_left'>
-      <pose>-1.6188299655914307 0.71559888124465942 0.5 0 0 0</pose>
-      <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.20000000000000001 4 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>0.20000000000000001 4 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
-        </visual>
-        <pose>0 0 0 0 0 0</pose>
-        <inertial>
-          <pose>0 0 0 0 0 0</pose>
-          <mass>1</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-        </inertial>
-        <enable_wind>false</enable_wind>
-      </link>
-      <self_collide>false</self_collide>
-    </model>
-    <model name='curve_1'>
-      <pose>2.4100000000000001 -0.58999999999999997 0.5 0 0 -0.78539799999999982</pose>
-      <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
-        </visual>
-        <pose>0 0 0 0 0 0</pose>
-        <inertial>
-          <pose>0 0 0 0 0 0</pose>
-          <mass>1</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-        </inertial>
-        <enable_wind>false</enable_wind>
-      </link>
-      <self_collide>false</self_collide>
-    </model>
-    <model name='curve_2'>
-      <pose>3 -2 0.5 0 0 -1.5707959999999999</pose>
-      <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
-        </visual>
-        <pose>0 0 0 0 0 0</pose>
-        <inertial>
-          <pose>0 0 0 0 0 0</pose>
-          <mass>1</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-        </inertial>
-        <enable_wind>false</enable_wind>
-      </link>
-      <self_collide>false</self_collide>
-    </model>
-    <model name='curve_3'>
-      <pose>2.5268285274505615 -3.5268285274505615 0.5 0 0 -2.3561899866283018</pose>
-      <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
-        </visual>
-        <pose>0 0 0 0 0 0</pose>
-        <inertial>
-          <pose>0 0 0 0 0 0</pose>
-          <mass>1</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-        </inertial>
-        <enable_wind>false</enable_wind>
-      </link>
-      <self_collide>false</self_collide>
-    </model>
-    <model name='curve_4'>
-      <pose>1 -4.1219558715820312 0.5 0 0 0</pose>
-      <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
-        </visual>
-        <pose>0 0 0 0 0 0</pose>
-        <inertial>
-          <pose>0 0 0 0 0 0</pose>
-          <mass>1</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-        </inertial>
-        <enable_wind>false</enable_wind>
-      </link>
-      <self_collide>false</self_collide>
-    </model>
-    <model name='curve_1_1'>
-      <pose>-0.8583682935018393 -3.342833767664378 0.5 0 0 -0.78539801780936824</pose>
-      <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
+
+      <link name='belly_0'>
+        <pose>-1.879 0.684 0.5 0 0 4.363</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
         </visual>
       </link>
-      <self_collide>false</self_collide>
-    </model>
-    <model name='curve_4_1'>
-      <pose>0.85432238507470082 0.26713416979378257 0.5 0 0 0</pose>
-      <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
+      <link name='belly_1'>
+        <pose>-1.766 0.939 0.5 0 0 4.224</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
         </visual>
       </link>
-      <self_collide>false</self_collide>
-    </model>
-    <model name='curve_3_1'>
-      <pose>-0.83076000225843494 -0.35065449223323508 0.5 0 0 -2.3561899866283018</pose>
-      <static>true</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <surface>
-            <friction>
-              <ode/>
-            </friction>
-            <bounce/>
-            <contact/>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>2.5 0.20000000000000001 1</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>0.0500000007 0.0500000007 0.0500000007 1</ambient>
-          </material>
+      <link name='belly_2'>
+        <pose>-1.618 1.176 0.5 0 0 4.084</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
         </visual>
       </link>
-      <self_collide>false</self_collide>
+      <link name='belly_3'>
+        <pose>-1.439 1.389 0.5 0 0 3.944</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_4'>
+        <pose>-1.231 1.576 0.5 0 0 3.805</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_5'>
+        <pose>-1.000 1.732 0.5 0 0 3.665</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_6'>
+        <pose>-0.749 1.854 0.5 0 0 3.526</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_7'>
+        <pose>-0.484 1.941 0.5 0 0 3.386</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_8'>
+        <pose>-0.209 1.989 0.5 0 0 3.246</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_9'>
+        <pose>0.070 1.999 0.5 0 0 3.107</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_10'>
+        <pose>0.347 1.970 0.5 0 0 2.967</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_11'>
+        <pose>0.618 1.902 0.5 0 0 2.827</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_12'>
+        <pose>0.877 1.798 0.5 0 0 2.688</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_13'>
+        <pose>1.118 1.658 0.5 0 0 2.548</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_14'>
+        <pose>1.338 1.486 0.5 0 0 2.409</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_15'>
+        <pose>1.532 1.286 0.5 0 0 2.269</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_16'>
+        <pose>1.696 1.060 0.5 0 0 2.129</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_17'>
+        <pose>1.827 0.813 0.5 0 0 1.990</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_18'>
+        <pose>1.923 0.551 0.5 0 0 1.850</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_19'>
+        <pose>1.981 0.278 0.5 0 0 1.710</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_20'>
+        <pose>2.000 0.000 0.5 0 0 1.571</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_21'>
+        <pose>1.981 -0.278 0.5 0 0 1.431</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_22'>
+        <pose>1.923 -0.551 0.5 0 0 1.292</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_23'>
+        <pose>1.827 -0.813 0.5 0 0 1.152</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_24'>
+        <pose>1.696 -1.060 0.5 0 0 1.012</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_25'>
+        <pose>1.532 -1.286 0.5 0 0 0.873</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_26'>
+        <pose>1.338 -1.486 0.5 0 0 0.733</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_27'>
+        <pose>1.118 -1.658 0.5 0 0 0.593</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_28'>
+        <pose>0.877 -1.798 0.5 0 0 0.454</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_29'>
+        <pose>0.618 -1.902 0.5 0 0 0.314</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_30'>
+        <pose>0.347 -1.970 0.5 0 0 0.175</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_31'>
+        <pose>0.070 -1.999 0.5 0 0 0.035</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_32'>
+        <pose>-0.209 -1.989 0.5 0 0 -0.105</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_33'>
+        <pose>-0.484 -1.941 0.5 0 0 -0.244</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_34'>
+        <pose>-0.749 -1.854 0.5 0 0 -0.384</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_35'>
+        <pose>-1.000 -1.732 0.5 0 0 -0.524</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='belly_36'>
+        <pose>-1.231 -1.576 0.5 0 0 -0.663</pose>
+        <collision name='col'><geometry><box><size>0.430 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'>
+          <geometry><box><size>0.430 1.0 1.0</size></box></geometry>
+          <material><ambient>0.05 0.05 0.05 1</ambient></material>
+        </visual>
+      </link>
+      <link name='top_bar'>
+        <pose>-2.5 3.5 0.5 0 0 0</pose>
+        <collision name='col'><geometry><box><size>4.5 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>4.5 1.0 1.0</size></box></geometry><material><ambient>0.05 0.05 0.05 1</ambient></material></visual>
+      </link>
+
+      <link name='left_drop'>
+        <pose>-4.25 1.5 0.5 0 0 1.5708</pose>
+        <collision name='col'><geometry><box><size>5.0 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>5.0 1.0 1.0</size></box></geometry><material><ambient>0.05 0.05 0.05 1</ambient></material></visual>
+      </link>
+      
+      <link name='connection'>
+        <pose>-2.9 0.0 0.5 0 0 -0.45</pose>
+        <collision name='col'><geometry><box><size>3.2 1.0 1.0</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>3.2 1.0 1.0</size></box></geometry><material><ambient>0.05 0.05 0.05 1</ambient></material></visual>
+      </link>
+
     </model>
-    <light name='sun' type='directional'>
-      <pose>0 0 10 0 0 0</pose>
-      <cast_shadows>true</cast_shadows>
-      <intensity>1</intensity>
-      <direction>-0.5 0.10000000000000001 -0.90000000000000002</direction>
-      <diffuse>0.800000012 0.800000012 0.800000012 1</diffuse>
-      <specular>0.200000003 0.200000003 0.200000003 1</specular>
-      <attenuation>
-        <range>10</range>
-        <linear>1</linear>
-        <constant>1</constant>
-        <quadratic>0</quadratic>
-      </attenuation>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
-    </light>
   </world>
 </sdf>
