@@ -26,8 +26,8 @@ def generate_launch_description():
         executable='create',
         arguments=['-file', urdf_file,
                    '-name', 'reactive_robot',
-                   # Ensure the robot spawns slightly above the ground
-                   '-x', '0.0', '-y', '0.0', '-z', '0.2'],
+                   # Spawning outside the bottom of the "5"
+                   '-x', '0.0', '-y', '-8.0', '-z', '0.2'], 
         output='screen'
     )
 
