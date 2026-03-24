@@ -27,7 +27,7 @@ def generate_launch_description():
         arguments=['-file', urdf_file,
                    '-name', 'reactive_robot',
                    # Spawning outside the bottom of the "5"
-                   '-x', '0.0', '-y', '-8.0', '-z', '0.2'], 
+                   '-x', '0.0', '-y', '-8.0', '-z', '0.2', '-Y', '1.5708'], 
         output='screen'
     )
 

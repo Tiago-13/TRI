@@ -12,13 +12,13 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        # 1. Bruno's launch files
+        # 1. launch files
         (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
-        # 2. Bruno's robot model files
+        # 2. robot model files
         (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
-        # 3. Your world files
+        # 3. world files
         (os.path.join('share', package_name, 'worlds'), glob(os.path.join('worlds', '*.sdf'))),
-        # 4. Your custom 3D Blender meshes
+        # 4. custom 3D Blender meshes
         (os.path.join('share', package_name, 'models', 'five_maze', 'meshes'), glob(os.path.join('models', 'five_maze', 'meshes', '*.stl'))),
     ],
     install_requires=['setuptools'],
@@ -30,6 +30,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'wall_follower = reactive_robot.wall_follower:main',
         ],
     },
 )

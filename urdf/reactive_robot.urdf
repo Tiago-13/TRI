@@ -50,6 +50,17 @@
     <origin xyz="0.1 0 -0.05" rpy="0 0 0"/>
   </joint>
 
+  <link name="rear_caster">
+    <visual><geometry><sphere radius="0.05"/></geometry></visual>
+    <collision><geometry><sphere radius="0.05"/></geometry></collision>
+    <inertial><mass value="0.1"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+  <joint name="rear_caster_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear_caster"/>
+    <origin xyz="-0.1 0 -0.05" rpy="0 0 0"/>
+  </joint>
+
   <link name="lidar_link">
     <visual><geometry><cylinder radius="0.04" length="0.05"/></geometry></visual>
   </link>
@@ -58,6 +69,15 @@
     <child link="lidar_link"/>
     <origin xyz="0 0 0.075" rpy="0 0 0"/>
   </joint>
+
+  <gazebo reference="caster">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
+  <gazebo reference="rear_caster">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
 
   <gazebo>
     <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
