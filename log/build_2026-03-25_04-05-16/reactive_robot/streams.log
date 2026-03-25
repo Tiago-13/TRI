@@ -1,0 +1,40 @@
+[0.408s] Invoking command in '/home/bruno/tri_ws/src/TRI/build/reactive_robot': PYTHONPATH=/home/bruno/tri_ws/src/TRI/build/reactive_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/bruno/tri_ws/src/TRI/build/reactive_robot/build
+[0.561s] running develop
+[0.656s] Removing /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages/reactive-robot.egg-link (link to .)
+[0.674s] Invoked command in '/home/bruno/tri_ws/src/TRI/build/reactive_robot' returned '0': PYTHONPATH=/home/bruno/tri_ws/src/TRI/build/reactive_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/bruno/tri_ws/src/TRI/build/reactive_robot/build
+[0.674s] Invoking command in '/home/bruno/tri_ws/src/TRI': PYTHONPATH=/home/bruno/tri_ws/src/TRI/build/reactive_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/reactive_robot build --build-base /home/bruno/tri_ws/src/TRI/build/reactive_robot/build install --record /home/bruno/tri_ws/src/TRI/build/reactive_robot/install.log --single-version-externally-managed install_data --force
+[0.806s] running egg_info
+[0.814s] writing build/reactive_robot/reactive_robot.egg-info/PKG-INFO
+[0.814s] writing dependency_links to build/reactive_robot/reactive_robot.egg-info/dependency_links.txt
+[0.814s] writing entry points to build/reactive_robot/reactive_robot.egg-info/entry_points.txt
+[0.814s] writing requirements to build/reactive_robot/reactive_robot.egg-info/requires.txt
+[0.814s] writing top-level names to build/reactive_robot/reactive_robot.egg-info/top_level.txt
+[0.832s] reading manifest file 'build/reactive_robot/reactive_robot.egg-info/SOURCES.txt'
+[0.832s] writing manifest file 'build/reactive_robot/reactive_robot.egg-info/SOURCES.txt'
+[0.832s] running build
+[0.832s] running build_py
+[0.832s] creating /home/bruno/tri_ws/src/TRI/build/reactive_robot/build
+[0.833s] creating /home/bruno/tri_ws/src/TRI/build/reactive_robot/build/lib
+[0.833s] creating /home/bruno/tri_ws/src/TRI/build/reactive_robot/build/lib/reactive_robot
+[0.833s] copying reactive_robot/__init__.py -> /home/bruno/tri_ws/src/TRI/build/reactive_robot/build/lib/reactive_robot
+[0.834s] copying reactive_robot/wall_follower.py -> /home/bruno/tri_ws/src/TRI/build/reactive_robot/build/lib/reactive_robot
+[0.834s] running install
+[0.837s] running install_lib
+[0.846s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages/reactive_robot
+[0.846s] copying /home/bruno/tri_ws/src/TRI/build/reactive_robot/build/lib/reactive_robot/__init__.py -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages/reactive_robot
+[0.846s] copying /home/bruno/tri_ws/src/TRI/build/reactive_robot/build/lib/reactive_robot/wall_follower.py -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages/reactive_robot
+[0.847s] byte-compiling /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages/reactive_robot/__init__.py to __init__.cpython-312.pyc
+[0.847s] byte-compiling /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages/reactive_robot/wall_follower.py to wall_follower.cpython-312.pyc
+[0.847s] running install_data
+[0.848s] copying resource/reactive_robot -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/ament_index/resource_index/packages
+[0.848s] copying package.xml -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot
+[0.848s] copying launch/assignment.launch.py -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/launch
+[0.848s] copying urdf/reactive_robot.urdf -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/urdf
+[0.848s] copying worlds/five.sdf -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/worlds
+[0.848s] copying models/five_maze/meshes/five_maze.stl -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/models/five_maze/meshes
+[0.848s] running install_egg_info
+[0.857s] Copying build/reactive_robot/reactive_robot.egg-info to /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages/reactive_robot-0.0.0-py3.12.egg-info
+[0.858s] running install_scripts
+[0.923s] Installing wall_follower script to /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/reactive_robot
+[0.924s] writing list of installed files to '/home/bruno/tri_ws/src/TRI/build/reactive_robot/install.log'
+[0.939s] Invoked command in '/home/bruno/tri_ws/src/TRI' returned '0': PYTHONPATH=/home/bruno/tri_ws/src/TRI/build/reactive_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/reactive_robot build --build-base /home/bruno/tri_ws/src/TRI/build/reactive_robot/build install --record /home/bruno/tri_ws/src/TRI/build/reactive_robot/install.log --single-version-externally-managed install_data --force

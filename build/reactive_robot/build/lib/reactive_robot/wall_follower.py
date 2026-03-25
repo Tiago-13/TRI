@@ -66,36 +66,10 @@ class WallFollower(Node):
             
         else:
             # open, front is clear, right is empty, back is empty.
-            # Find the closest wall in the entire 360-degree scan
-            min_overall_distance = min(ranges)
-            
-            if min_overall_distance >= 9.9:
-                # 100% Blind. No walls within 8m. Spin to sweep the area.
-                cmd.linear.x = 0.0
-                cmd.angular.z = 0.5
-                self.get_logger().info("BLIND: Spinning to find a wall...")
-            else:
-                # We see a wall somewhere! Find its index.
-                closest_index = ranges.index(min_overall_distance)
-                
-                # Check if the closest wall is already in our "front" cone (150 to 210)
-                if 150 <= closest_index <= 210:
-                    cmd.linear.x = 0.3
-                    cmd.angular.z = 0.0
-                    self.get_logger().info(f"HOMING: Wall is dead ahead at {min_overall_distance:.2f}m. Driving forward.")
-                
-                # If the wall is to our right (index < 180), spin right
-                elif closest_index < 180:
-                    cmd.linear.x = 0.0
-                    cmd.angular.z = -0.5
-                    self.get_logger().info(f"SEARCHING: Closest wall is to the right. Spinning...")
-                
-                # If the wall is to our left (index > 180), spin left
-                else:
-                    cmd.linear.x = 0.0
-                    cmd.angular.z = 0.5
-                    self.get_logger().info(f"SEARCHING: Closest wall is to the left. Spinning...")
-                    
+            # drive straight ahead to find the wall
+            cmd.linear.x = 0.3
+            cmd.angular.z = 0.0
+
         self.publisher_.publish(cmd)
 
 def main(args=None):
