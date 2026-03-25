@@ -1,1 +1,0 @@
-/home/bruno/tri_ws/src/TRI/launch/assignment.launch.py
