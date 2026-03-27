@@ -1,1 +1,0 @@
-/home/bruno/tri_ws/src/TRI/setup.py

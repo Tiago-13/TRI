@@ -1,2 +1,0 @@
-[console_scripts]
-wall_follower = reactive_robot.wall_follower:main
