@@ -3,15 +3,13 @@ import numpy as np
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
-from rclpy.qos import qos_profile_sensor_data # <--- Brought this back!
+from rclpy.qos import qos_profile_sensor_data
 import math
 import time 
 
-
-
 class WallFollower(Node):
     def detect_circle(self, ranges, angles):
-        wall_threshold = 5.0  # big enough to capture the full belly
+        wall_threshold = 8.0  # big enough to capture the full belly
 
         wall_x = []
         wall_y = []
@@ -32,13 +30,13 @@ class WallFollower(Node):
         wall_x = np.array(wall_x)
         wall_y = np.array(wall_y)
 
-        # Build the system:  x^2 + y^2 = 2*a*x + 2*b*y + (R^2 - a^2 - b^2)
+        # x^2 + y^2 = 2*a*x + 2*b*y + (R^2 - a^2 - b^2)
         A = np.column_stack([2 * wall_x, 2 * wall_y, np.ones(len(wall_x))])
         b_vec = wall_x**2 + wall_y**2
-        result, residuals, _, _ = np.linalg.lstsq(A, b_vec, rcond=None)
+        result, _, _, _ = np.linalg.lstsq(A, b_vec, rcond=None)
 
-        cx = result[0]  # center x relative to robot
-        cy = result[1]  # center y relative to robot
+        cx = result[0] # center x relative to robot
+        cy = result[1] # center y relative to robot
         R = math.sqrt(result[2] + cx**2 + cy**2)
 
         # --- Validate the fit ---
@@ -59,7 +57,7 @@ class WallFollower(Node):
         # - Arc spans at least 120 degrees (not just a slightly curved wall)
         if R < 0.5 or R > 4.0:
             return False, 0.0, 0.0
-        if fit_error > 0.2:
+        if fit_error > 0.35:
             return False, 0.0, 0.0
         if angle_range < math.radians(120):
             return False, 0.0, 0.0
@@ -81,9 +79,9 @@ class WallFollower(Node):
             qos_profile_sensor_data)
 
         self.desired_distance = 0.5
-        self.kp = 6.0
+        self.kp = 2.0
         self.ki = 0.0
-        self.kd = 4.0
+        self.kd = 0.5
         
         self.prev_error = 0.0
         self.integral = 0.0
@@ -99,10 +97,10 @@ class WallFollower(Node):
         if len(ranges) < 360:
             return
 
-        front = min(ranges[150:210])         # Dead ahead (60 degree cone)
-        front_right = min(ranges[110:150])   # Angled right
-        right = min(ranges[70:110])          # Directly right
-        back_right = min(ranges[20:70])      # Looking behind its right shoulder!
+        front = min(ranges[150:210]) # Dead ahead (60 degree cone)
+        front_right = min(ranges[110:150]) # Angled right
+        right = min(ranges[70:110]) # Directly right
+        back_right = min(ranges[20:70]) # Looking behind its right shoulder!
 
         # print the robot's vision to the terminal
         self.get_logger().info(f"F: {front:.2f} | FR: {front_right:.2f} | R: {right:.2f} | BR: {back_right:.2f}")
@@ -121,19 +119,57 @@ class WallFollower(Node):
             dist_to_center = math.sqrt(cx**2 + cy**2)
             angle_to_center = math.atan2(cy, cx)
             
-            if dist_to_center < 0.1:
-                # We're at the center, stop
-                cmd.linear.x = 0.0
-                cmd.angular.z = 0.0
+            if dist_to_center < 0.75:
+                # We're at the center, point to exit
+                gap_indices = [i for i, r in enumerate(ranges) if r >= 9.9]
+
+                if gap_indices:
+                    # Find the longest contiguous gap of "10.0" readings
+                    best_gap = []
+                    current_gap = []
+                    
+                    for i in range(len(gap_indices)):
+                        if not current_gap or gap_indices[i] == current_gap[-1] + 1:
+                            current_gap.append(gap_indices[i])
+                        else:
+                            if len(current_gap) > len(best_gap):
+                                best_gap = current_gap
+                            current_gap = [gap_indices[i]]
+                    
+                    # Final check for the last gap found
+                    if len(current_gap) > len(best_gap):
+                        best_gap = current_gap
+
+                    # Calculate the angle to the middle of the widest gap
+                    if best_gap:
+                        mid_idx = best_gap[len(best_gap) // 2]
+                        exit_angle = msg.angle_min + (mid_idx * msg.angle_increment)
+                        
+                        # --- POINT AND STOP LOGIC ---
+                        if abs(exit_angle) < 0.05: # Approx 3 degrees
+                            self.get_logger().info("ALIGNED WITH EXIT - STOPPING")
+                            cmd.linear.x = 0.0
+                            cmd.angular.z = 0.0
+                        else:
+                            cmd.linear.x = 0.0
+                            # Slow down rotation as we get closer to the angle
+                            cmd.angular.z = 0.8 * exit_angle
+                        
+                        self.get_logger().info(f"EXIT FOUND: Angle {math.degrees(exit_angle):.1f}°")
+                else:
+                    # No gap found (unlikely in a 'belly'), just spin to find one
+                    cmd.linear.x = 0.0
+                    cmd.angular.z = 0.5
             else:
-                # Drive toward centroid
-                cmd.linear.x = min(0.15, dist_to_center)
-                cmd.angular.z = 0.5 * angle_to_center
+                # Not at center yet: Drive toward the calculated circle center
+                angle_to_center = math.atan2(cy, cx)
+                cmd.linear.x = min(0.2, dist_to_center)
+                cmd.angular.z = 0.8 * angle_to_center
         
         # Safety override: obstacle dead ahead
         elif front < 0.5:
-            cmd.linear.x = 0.0
-            cmd.angular.z = 0.6
+            cmd.linear.x = 0.02
+            cmd.angular.z = 1.75
             self.integral = 0.0
             self.prev_error = 0.0
 
@@ -142,25 +178,31 @@ class WallFollower(Node):
             self.integral = 0.0
             self.prev_error = 0.0
 
-            min_dist = min(ranges)
-            if min_dist >= 9.9:
-                # Totally blind — spin to sweep
-                cmd.linear.x = 0.5
-                cmd.angular.z = 0.5
-            else:
-                closest_idx = ranges.index(min_dist)
-                if 150 <= closest_idx <= 210:
-                    # Wall is ahead — drive toward it
-                    cmd.linear.x = 0.3
-                    cmd.angular.z = 0.0
-                elif closest_idx < 180:
-                    # Wall is to the right — spin right
-                    cmd.linear.x = 0.0
-                    cmd.angular.z = -0.5
-                else:
-                    # Wall is to the left — spin left
-                    cmd.linear.x = 0.0
+            if front > 0.8:
+
+                min_dist = min(ranges)
+                if min_dist >= 9.9:
+                    # Totally blind — spin to sweep
+                    cmd.linear.x = 0.5
                     cmd.angular.z = 0.5
+                else:
+                    closest_idx = ranges.index(min_dist)
+                    if 150 <= closest_idx <= 210:
+                        # Wall is ahead — drive toward it with slight bias to not get stuck
+                        cmd.linear.x = 0.3
+                        cmd.angular.z = -0.15
+                    elif closest_idx < 180:
+                        # Wall is to the right — spin right
+                        cmd.linear.x = 0.05
+                        cmd.angular.z = -0.5
+                    else:
+                        # Wall is to the left — spin left
+                        cmd.linear.x = 0.05
+                        cmd.angular.z = 0.5
+            else:
+                # If front isn't perfectly clear, just keep turning left
+                cmd.linear.x = 0.0
+                cmd.angular.z = 0.5
 
         else:
             # --- PID computation ---
@@ -179,7 +221,7 @@ class WallFollower(Node):
             angular_z = max(-1.5, min(1.5, angular_z))
 
             # Slow down in proportion to how hard we're turning
-            cmd.linear.x = max(0.05, 0.25 - 0.1 * abs(angular_z))
+            cmd.linear.x = max(0.1, 0.3 - 0.15 * abs(angular_z))
             cmd.angular.z = angular_z
 
         self.publisher_.publish(cmd)

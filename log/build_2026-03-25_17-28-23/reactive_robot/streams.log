@@ -1,0 +1,34 @@
+[0.701s] Invoking command in '/home/bruno/tri_ws/src/TRI/build/reactive_robot': PYTHONPATH=/home/bruno/tri_ws/src/TRI/build/reactive_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/bruno/tri_ws/src/TRI/build/reactive_robot/build --no-deps symlink_data
+[0.864s] running develop
+[0.958s] running egg_info
+[0.958s] creating reactive_robot.egg-info
+[0.967s] writing reactive_robot.egg-info/PKG-INFO
+[0.967s] writing dependency_links to reactive_robot.egg-info/dependency_links.txt
+[0.967s] writing entry points to reactive_robot.egg-info/entry_points.txt
+[0.967s] writing requirements to reactive_robot.egg-info/requires.txt
+[0.967s] writing top-level names to reactive_robot.egg-info/top_level.txt
+[0.967s] writing manifest file 'reactive_robot.egg-info/SOURCES.txt'
+[0.984s] reading manifest file 'reactive_robot.egg-info/SOURCES.txt'
+[0.985s] writing manifest file 'reactive_robot.egg-info/SOURCES.txt'
+[0.994s] running build_ext
+[0.994s] Creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages/reactive-robot.egg-link (link to .)
+[0.994s] Installing wall_follower script to /home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/reactive_robot
+[0.995s] 
+[0.995s] Installed /home/bruno/tri_ws/src/TRI/build/reactive_robot
+[0.995s] running symlink_data
+[0.995s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/ament_index
+[0.995s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/ament_index/resource_index
+[0.995s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/ament_index/resource_index/packages
+[0.996s] symbolically linking /home/bruno/tri_ws/src/TRI/build/reactive_robot/resource/reactive_robot -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/ament_index/resource_index/packages
+[0.996s] symbolically linking /home/bruno/tri_ws/src/TRI/build/reactive_robot/package.xml -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot
+[0.996s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/launch
+[0.996s] symbolically linking /home/bruno/tri_ws/src/TRI/build/reactive_robot/launch/assignment.launch.py -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/launch
+[0.997s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/urdf
+[0.997s] symbolically linking /home/bruno/tri_ws/src/TRI/build/reactive_robot/urdf/reactive_robot.urdf -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/urdf
+[0.997s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/worlds
+[0.998s] symbolically linking /home/bruno/tri_ws/src/TRI/build/reactive_robot/worlds/five.sdf -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/worlds
+[0.998s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/models
+[0.999s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/models/five_maze
+[0.999s] creating /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/models/five_maze/meshes
+[0.999s] symbolically linking /home/bruno/tri_ws/src/TRI/build/reactive_robot/models/five_maze/meshes/five_maze.stl -> /home/bruno/tri_ws/src/TRI/install/reactive_robot/share/reactive_robot/models/five_maze/meshes
+[1.019s] Invoked command in '/home/bruno/tri_ws/src/TRI/build/reactive_robot' returned '0': PYTHONPATH=/home/bruno/tri_ws/src/TRI/build/reactive_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/bruno/tri_ws/src/TRI/install/reactive_robot/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/bruno/tri_ws/src/TRI/build/reactive_robot/build --no-deps symlink_data
