@@ -22,7 +22,7 @@ class WallFollower(Node):
         # Need enough wall points for a meaningful fit, but not too many
         # (too many = we're in a corridor, not a belly)
         wall_ratio = len(wall_x) / len(ranges)
-        if wall_ratio < 0.3 or wall_ratio > 0.85:
+        if wall_ratio < 0.15 or wall_ratio > 0.85:
             return False, 0.0, 0.0
 
         # --- Least-squares circle fit ---
@@ -39,7 +39,6 @@ class WallFollower(Node):
         cy = result[1] # center y relative to robot
         R = math.sqrt(result[2] + cx**2 + cy**2)
 
-        # --- Validate the fit ---
         # Check how well points actually lie on the fitted circle
         distances_to_circle = np.sqrt((wall_x - cx)**2 + (wall_y - cy)**2)
         fit_error = np.std(distances_to_circle - R)
@@ -55,9 +54,9 @@ class WallFollower(Node):
         # - Radius is reasonable (not a tiny bump or a huge open space)
         # - Points actually lie on the fitted circle (low fit error)
         # - Arc spans at least 120 degrees (not just a slightly curved wall)
-        if R < 0.5 or R > 4.0:
+        if R < 0.5 or R > 5.0:
             return False, 0.0, 0.0
-        if fit_error > 0.35:
+        if fit_error > 0.45:
             return False, 0.0, 0.0
         if angle_range < math.radians(120):
             return False, 0.0, 0.0
@@ -115,19 +114,17 @@ class WallFollower(Node):
         angles = [msg.angle_min + i * msg.angle_increment for i in range(len(ranges))]
         is_circle, cx, cy = self.detect_circle(ranges, angles)
 
+        # 100% REACTIVE
         if is_circle:
             dist_to_center = math.sqrt(cx**2 + cy**2)
             angle_to_center = math.atan2(cy, cx)
-            
-            if dist_to_center < 0.75:
-                # We're at the center, point to exit
+
+            if dist_to_center < 0.5:          
+                # We are in the center zone. Find the exit!
                 gap_indices = [i for i, r in enumerate(ranges) if r >= 9.9]
 
                 if gap_indices:
-                    # Find the longest contiguous gap of "10.0" readings
-                    best_gap = []
-                    current_gap = []
-                    
+                    best_gap, current_gap = [], []
                     for i in range(len(gap_indices)):
                         if not current_gap or gap_indices[i] == current_gap[-1] + 1:
                             current_gap.append(gap_indices[i])
@@ -135,36 +132,30 @@ class WallFollower(Node):
                             if len(current_gap) > len(best_gap):
                                 best_gap = current_gap
                             current_gap = [gap_indices[i]]
-                    
-                    # Final check for the last gap found
                     if len(current_gap) > len(best_gap):
                         best_gap = current_gap
 
-                    # Calculate the angle to the middle of the widest gap
                     if best_gap:
                         mid_idx = best_gap[len(best_gap) // 2]
                         exit_angle = msg.angle_min + (mid_idx * msg.angle_increment)
-                        
-                        # --- POINT AND STOP LOGIC ---
-                        if abs(exit_angle) < 0.05: # Approx 3 degrees
-                            self.get_logger().info("ALIGNED WITH EXIT - STOPPING")
+
+                        if abs(exit_angle) < 0.15:     # Aligned with exit
+                            self.get_logger().info("ALIGNED WITH EXIT — STOPPING")
                             cmd.linear.x = 0.0
                             cmd.angular.z = 0.0
                         else:
+                            # Spin to face the exit. DO NOT drive forward.
                             cmd.linear.x = 0.0
-                            # Slow down rotation as we get closer to the angle
-                            cmd.angular.z = 0.8 * exit_angle
-                        
-                        self.get_logger().info(f"EXIT FOUND: Angle {math.degrees(exit_angle):.1f}°")
+                            cmd.angular.z = 0.6 * exit_angle   
                 else:
-                    # No gap found (unlikely in a 'belly'), just spin to find one
+                    # In the center but can't see the gap? Just spin.
                     cmd.linear.x = 0.0
-                    cmd.angular.z = 0.5
+                    cmd.angular.z = 0.4
+            
             else:
-                # Not at center yet: Drive toward the calculated circle center
-                angle_to_center = math.atan2(cy, cx)
-                cmd.linear.x = min(0.2, dist_to_center)
-                cmd.angular.z = 0.8 * angle_to_center
+                # We see the circle, but we aren't in the center zone yet. Drive to it!
+                cmd.linear.x = min(0.2, dist_to_center * 0.6)
+                cmd.angular.z = 1.2 * angle_to_center
         
         # Safety override: obstacle dead ahead
         elif front < 0.5:
@@ -223,6 +214,25 @@ class WallFollower(Node):
             # Slow down in proportion to how hard we're turning
             cmd.linear.x = max(0.1, 0.3 - 0.15 * abs(angular_z))
             cmd.angular.z = angular_z
+
+        # velocity limits (stateless)
+        MAX_LIN = 0.3
+        MAX_ANG = 1.0
+        MAX_WHEEL_VEL = 0.4
+        WHEEL_BASE = 0.16 
+
+        cmd.linear.x = max(0.0, min(MAX_LIN, cmd.linear.x))
+        cmd.angular.z = max(-MAX_ANG, min(MAX_ANG, cmd.angular.z))
+
+        # derive wheel velocities and scale down if either exceeds the limit
+        v_left  = cmd.linear.x - (cmd.angular.z * WHEEL_BASE / 2)
+        v_right = cmd.linear.x + (cmd.angular.z * WHEEL_BASE / 2)
+
+        max_wheel = max(abs(v_left), abs(v_right))
+        if max_wheel > MAX_WHEEL_VEL:
+            scale = MAX_WHEEL_VEL / max_wheel
+            cmd.linear.x *= scale
+            cmd.angular.z *= scale
 
         self.publisher_.publish(cmd)
         self.get_logger().info(
