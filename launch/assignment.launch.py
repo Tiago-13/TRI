@@ -50,6 +50,11 @@ def generate_launch_description():
     # Generate a random heading (yaw) between 0 and 2*Pi radians (360 degrees)
     rand_yaw = random.uniform(0.0, 2 * math.pi)
 
+    # Allow terminal arguments to override the random values!
+    x_pose = LaunchConfiguration('x_pose', default=str(rand_x))
+    y_pose = LaunchConfiguration('y_pose', default=str(rand_y))
+    yaw_pose = LaunchConfiguration('yaw_pose', default=str(rand_yaw))
+
     # Start Gazebo Sim with the world file
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -64,7 +69,8 @@ def generate_launch_description():
         executable='parameter_bridge',
         arguments=[
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
-            '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan'
+            '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan',
+            '/model/reactive_robot/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry'
         ],
         output='screen'
     )
@@ -75,10 +81,10 @@ def generate_launch_description():
             executable='create',
             arguments=['-file', urdf_file,
                     '-name', 'reactive_robot',
-                    '-x', str(rand_x), 
-                    '-y', str(rand_y), 
+                    '-x', x_pose, 
+                    '-y', y_pose, 
                     '-z', '0.2', 
-                    '-Y', str(rand_yaw)], 
+                    '-Y', yaw_pose], 
             output='screen'
         )
 
@@ -86,6 +92,9 @@ def generate_launch_description():
 
     return LaunchDescription([
         set_gz_resource_path,
+        DeclareLaunchArgument('x_pose', default_value=str(rand_x)),
+        DeclareLaunchArgument('y_pose', default_value=str(rand_y)),
+        DeclareLaunchArgument('yaw_pose', default_value=str(rand_yaw)),
         gz_sim,
         bridge,
         spawn_entity

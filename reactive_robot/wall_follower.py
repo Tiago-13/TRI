@@ -5,7 +5,9 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
 from rclpy.qos import qos_profile_sensor_data
 import math
-import time 
+import time
+from nav_msgs.msg import Odometry
+import matplotlib.pyplot as plt
 
 class WallFollower(Node):
     def detect_circle(self, ranges, angles):
@@ -87,6 +89,29 @@ class WallFollower(Node):
         self.prev_time = time.time()    
 
         self.get_logger().info("Wall Follower Node has started! Looking for a wall...")
+
+        # =======================================================
+        # DATA LOGGING FOR REPORT (STRICTLY NO NAVIGATION LOGIC)
+        # =======================================================
+        self.odom_subscription = self.create_subscription(
+            Odometry,
+            '/model/reactive_robot/odometry',
+            self.odom_callback,
+            10)
+            
+        self.log_time = []
+        self.log_error = []
+        self.log_x = []
+        self.log_y = []
+        self.start_time_log = time.time()
+        self.current_x = 0.0
+        self.current_y = 0.0
+        # =======================================================
+
+    def odom_callback(self, msg):
+        # We only use this for generating the trajectory plot for the paper!
+        self.current_x = msg.pose.pose.position.x
+        self.current_y = msg.pose.pose.position.y
 
     def scan_callback(self, msg):
         ranges = [x if not math.isnan(x) and not math.isinf(x) and x > 0.15 else 10.0 for x in msg.ranges]
@@ -234,6 +259,16 @@ class WallFollower(Node):
             cmd.linear.x *= scale
             cmd.angular.z *= scale
 
+        # --- PID computation ---
+        error = self.desired_distance - right  # positive = too close
+
+        # LOG DATA FOR THE REPORT
+        current_t = time.time() - self.start_time_log
+        self.log_time.append(current_t)
+        self.log_error.append(error)
+        self.log_x.append(self.current_x)
+        self.log_y.append(self.current_y)
+
         self.publisher_.publish(cmd)
         self.get_logger().info(
             f"R: {right:.2f} | err: {self.desired_distance - right:.2f} | ang_z: {cmd.angular.z:.2f}")
@@ -245,8 +280,39 @@ def main(args=None):
         rclpy.spin(wall_follower)
     except KeyboardInterrupt:
         pass
+
+    # --- GENERATE PLOTS FOR THE PAPER BEFORE SHUTTING DOWN ---
+    print("\n[Data Logger] Generating plots for report...")
+    
+    # 1. Plot PID Error over Time
+    plt.figure(figsize=(10, 5))
+    plt.plot(wall_follower.log_time, wall_follower.log_error, label='PID Error (m)')
+    plt.axhline(0, color='red', linestyle='--', label='Target (0 Error)')
+    plt.title('PID Wall-Following Error Over Time')
+    plt.xlabel('Time (seconds)')
+    plt.ylabel('Error (meters)')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('pid_error_plot.png')
+    
+    # 2. Plot Robot Trajectory (Top-Down View)
+    plt.figure(figsize=(8, 8))
+    plt.plot(wall_follower.log_x, wall_follower.log_y, label='Robot Trajectory', color='green')
+    plt.scatter(wall_follower.log_x[0], wall_follower.log_y[0], color='blue', label='Start', zorder=5)
+    plt.scatter(wall_follower.log_x[-1], wall_follower.log_y[-1], color='red', label='End', zorder=5)
+    plt.title('Robot 2D Trajectory')
+    plt.xlabel('X Coordinate (m)')
+    plt.ylabel('Y Coordinate (m)')
+    plt.axis('equal')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('trajectory_plot.png')
+    
+    print("[Data Logger] Success! Plots saved as 'pid_error_plot.png' and 'trajectory_plot.png'!\n")
     wall_follower.destroy_node()
-    rclpy.shutdown()
+
+    if rclpy.ok():
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
