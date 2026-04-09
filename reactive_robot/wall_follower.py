@@ -78,9 +78,9 @@ class WallFollower(Node):
             qos_profile_sensor_data)
 
         self.desired_distance = 0.5
-        self.kp = 2.0
+        self.kp = 3.5
         self.ki = 0.0
-        self.kd = 0.5
+        self.kd = 1.5
         
         self.prev_error = 0.0
         self.integral = 0.0
@@ -243,7 +243,9 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     wall_follower.destroy_node()
-    rclpy.shutdown()
+
+    if rclpy.ok():
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
