@@ -154,7 +154,7 @@ class WallFollower(Node):
             
             else:
                 # We see the circle, but we aren't in the center zone yet. Drive to it!
-                cmd.linear.x = min(0.2, dist_to_center * 0.6)
+                cmd.linear.x = dist_to_center * 0.2
                 cmd.angular.z = 1.0 * angle_to_center
         
         # Safety override: obstacle dead ahead
