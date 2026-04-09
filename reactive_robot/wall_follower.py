@@ -169,9 +169,13 @@ class WallFollower(Node):
                             cmd.linear.x = 0.0
                             cmd.angular.z = 0.0
                         else:
-                            # Spin to face the exit. DO NOT drive forward.
                             cmd.linear.x = 0.0
-                            cmd.angular.z = 0.6 * exit_angle   
+
+                            # Stronger + clamped turning to avoid weak left turns
+                            turn = 0.8 * exit_angle
+                            turn = max(-0.6, min(0.6, turn))
+
+                            cmd.angular.z = turn
                 else:
                     # In the center but can't see the gap? Just spin.
                     cmd.linear.x = 0.0
