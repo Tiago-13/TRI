@@ -80,9 +80,9 @@ class WallFollower(Node):
             qos_profile_sensor_data)
 
         self.desired_distance = 0.5
-        self.kp = 2.0
+        self.kp = 3.5
         self.ki = 0.0
-        self.kd = 0.5
+        self.kd = 1.5
         
         self.prev_error = 0.0
         self.integral = 0.0
@@ -179,13 +179,13 @@ class WallFollower(Node):
             
             else:
                 # We see the circle, but we aren't in the center zone yet. Drive to it!
-                cmd.linear.x = min(0.2, dist_to_center * 0.6)
-                cmd.angular.z = 1.2 * angle_to_center
+                cmd.linear.x = dist_to_center * 0.2
+                cmd.angular.z = 1.0 * angle_to_center
         
         # Safety override: obstacle dead ahead
         elif front < 0.5:
             cmd.linear.x = 0.02
-            cmd.angular.z = 1.75
+            cmd.angular.z = 1.00
             self.integral = 0.0
             self.prev_error = 0.0
 
@@ -194,31 +194,26 @@ class WallFollower(Node):
             self.integral = 0.0
             self.prev_error = 0.0
 
-            if front > 0.8:
 
-                min_dist = min(ranges)
-                if min_dist >= 9.9:
-                    # Totally blind — spin to sweep
-                    cmd.linear.x = 0.5
-                    cmd.angular.z = 0.5
-                else:
-                    closest_idx = ranges.index(min_dist)
-                    if 150 <= closest_idx <= 210:
-                        # Wall is ahead — drive toward it with slight bias to not get stuck
-                        cmd.linear.x = 0.3
-                        cmd.angular.z = -0.15
-                    elif closest_idx < 180:
-                        # Wall is to the right — spin right
-                        cmd.linear.x = 0.05
-                        cmd.angular.z = -0.5
-                    else:
-                        # Wall is to the left — spin left
-                        cmd.linear.x = 0.05
-                        cmd.angular.z = 0.5
-            else:
-                # If front isn't perfectly clear, just keep turning left
-                cmd.linear.x = 0.0
+            min_dist = min(ranges)
+            if min_dist >= 9.9:
+                # Totally blind — spin to sweep
+                cmd.linear.x = 0.5
                 cmd.angular.z = 0.5
+            else:
+                closest_idx = ranges.index(min_dist)
+                if 150 <= closest_idx <= 210:
+                    # Wall is ahead — drive toward it with slight bias to not get stuck
+                    cmd.linear.x = 0.3
+                    cmd.angular.z = 0.15
+                elif closest_idx < 180:
+                    # Wall is to the right — spin right
+                    cmd.linear.x = 0.05
+                    cmd.angular.z = -0.5
+                else:
+                    # Wall is to the left — spin left
+                    cmd.linear.x = 0.05
+                    cmd.angular.z = 0.5
 
         else:
             # --- PID computation ---
